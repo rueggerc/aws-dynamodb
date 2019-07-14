@@ -1,0 +1,29 @@
+[
+  {
+    "sensorID": "sensor1",
+    "sensorType": "Raspberry PI 3B",
+    "info": {
+      "temperature": 68.13,
+      "humidity": 78.43,
+      "timestamp": 1562528521654
+    }  
+  },
+  {
+    "sensorID": "sensor2",
+    "sensorType": "Raspberry PI 3B",
+    "info": {
+      "temperature": 69.13,
+      "humidity": 79.43,
+      "timestamp": 1562528521654
+    }  
+  },
+  {
+    "sensorID": "sensor3",
+    "sensorType": "Raspberry PI 3B",
+    "info": {
+      "temperature": 70.44,
+      "humidity": 82.43,
+      "timestamp": 1562528521654
+    }  
+  }
+]

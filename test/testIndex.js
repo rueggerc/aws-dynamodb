@@ -12,6 +12,13 @@ describe ('Dynamo DB', function() {
     });
   });
 
+  // before(function() {
+  //   AWS.config.update({
+  //     region: "us-east-1",
+  //     endpoint: "https://dynamodb.us-east-1.amazonaws.com"
+  //   });
+  // });
+
   after(function() {
   });
 
@@ -133,7 +140,7 @@ describe ('Dynamo DB', function() {
 
   });
 
-  it('Select Movies By Year', function() {
+  xit('Select Movies By Year', function() {
     let docClient = new AWS.DynamoDB.DocumentClient();
    
     console.log("Querying for movies from 1985.");
@@ -163,6 +170,36 @@ describe ('Dynamo DB', function() {
 
   });
 
+  it('Select All Sensors', function() {
+    let docClient = new AWS.DynamoDB.DocumentClient();
+   
+    console.log("Select All Sensors");
+
+    let params = {
+        TableName : "SensorData",
+        KeyConditionExpression: "#id = :sensorid",
+        ExpressionAttributeNames:{
+          "#id": "sensorID"
+      },
+      ExpressionAttributeValues: {
+          ":sensorid": "sensor2"
+      }
+    };
+    
+    docClient.query(params, function(err, data) {
+        if (err) {
+            console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Query succeeded.");
+            data.Items.forEach(function(item) {
+                console.log(" -", item.sensorID + ": " + item.sensorType);
+            });
+        }
+    });
+
+
+  });
+
   xit('SCAN Movie Table', function() {
 
     let docClient = new AWS.DynamoDB.DocumentClient();
@@ -180,7 +217,7 @@ describe ('Dynamo DB', function() {
         }
     };
     
-    console.log("Scanning Movies table.");
+    console.log("Scanning Mtable.");
     docClient.scan(params, onScan);
     
     function onScan(err, data) {
@@ -193,6 +230,49 @@ describe ('Dynamo DB', function() {
                console.log(
                     movie.year + ": ",
                     movie.title, "- rating:", movie.info.rating);
+            });
+    
+            // continue scanning if we have more movies, because
+            // scan can retrieve a maximum of 1MB of data
+            if (typeof data.LastEvaluatedKey != "undefined") {
+                console.log("Scanning for more...");
+                params.ExclusiveStartKey = data.LastEvaluatedKey;
+                docClient.scan(params, onScan);
+            }
+        }
+    }
+  
+  });
+
+  it('SCAN Sensor Table', function() {
+
+    let docClient = new AWS.DynamoDB.DocumentClient();
+   
+    let params = {
+        TableName: "SensorData",
+        ProjectionExpression: "#sensorid, sensorType, info.temperature",
+        FilterExpression: "#sensorid between :start_id and :end_id",
+        ExpressionAttributeNames: {
+            "#sensorid": "sensorID",
+        },
+        ExpressionAttributeValues: {
+             ":start_id": 'sensor0',
+             ":end_id": 'sensor4'
+        }
+    };
+    
+    console.log("Scanning SensorData.");
+    docClient.scan(params, onScan);
+    
+    function onScan(err, data) {
+        if (err) {
+            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            // print all the movies
+            console.log("Scan succeeded.");
+            data.Items.forEach(function(sensor) {
+               console.log(JSON.stringify(sensor,null,2));
+               // console.log(sensor.sensorID + ": " + sensor.sensorType + " " + sensor.info.temperature);
             });
     
             // continue scanning if we have more movies, because

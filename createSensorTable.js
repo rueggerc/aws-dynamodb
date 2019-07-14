@@ -10,16 +10,15 @@ AWS.config.update({
 
 
 let dynamoDB = new AWS.DynamoDB();
-
 let params = {
-    TableName: "Movies",
+    TableName: "SensorData",
     KeySchema: [
-        {AttributeName: "year", KeyType: "HASH"},
-        {AttributeName: "title", KeyType: "RANGE"},
+        {AttributeName: "sensorID", KeyType: "HASH"},
+        {AttributeName: "sensorType", KeyType: "RANGE"},
     ],
     AttributeDefinitions: [
-        {AttributeName: "year", AttributeType: "N"},
-        {AttributeName: "title", AttributeType: "S"}
+        {AttributeName: "sensorID", AttributeType: "S"},
+        {AttributeName: "sensorType", AttributeType: "S"}
     ],
     ProvisionedThroughput: {
         ReadCapacityUnits: 10,

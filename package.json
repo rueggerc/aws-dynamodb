@@ -6,8 +6,11 @@
   "scripts": {
     "test": "node_modules/.bin/mocha -t 1000 --reporter spec --ui bdd test",
     "createMoviesTable": "node createMovieTable.js",
+    "createSensorTable": "node createSensorTable.js",
     "deleteMoviesTable": "node deleteMovieTable.js",
+    "deleteSensorTable": "node deleteSensorTable.js",
     "loadMovies": "node loadMovieData.js",
+    "loadSensors": "node loadSensorData.js",
     "build": "node_modules/.bin/gulp build",
     "deploy": "node build/upload-to-aws",
     "build-and-deploy": "npm run build build && npm run deploy"

@@ -1,18 +1,22 @@
 const AWS = require("aws-sdk");
 const fs = require('fs');
 
+// AWS.config.update({
+//     region: "us-east-1",
+//     endpoint: "http://localhost:8000"
+// });
+
 AWS.config.update({
-    region: "us-east-1",
-    endpoint: "http://localhost:8000"
+    region: "us-east-1"
 });
 
 let docClient = new AWS.DynamoDB.DocumentClient();
 
 console.log("Importing movies into DynamoDB. Please wait.");
 
-var allMovies = JSON.parse(fs.readFileSync('./data/moviedata.json', 'utf8'));
+let allMovies = JSON.parse(fs.readFileSync('./data/moviedata.json', 'utf8'));
 allMovies.forEach(function(movie) {
-    var params = {
+    let params = {
         TableName: "Movies",
         Item: {
             "year":  movie.year,
