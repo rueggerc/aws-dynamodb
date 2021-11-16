@@ -33,7 +33,7 @@
     "run-sequence": "^1.2.2"
   },
   "dependencies": {
-    "aws-sdk": "^2.485.0",
+    "aws-sdk": "^2.814.0",
     "aws-xray-sdk-core": "^2.3.3",
     "jsonschema": "^1.2.0"
   }
